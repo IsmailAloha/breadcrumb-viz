@@ -47,6 +47,13 @@ const TYPE_CONFIG = {
     dotCls:   'dot-app',
     icon: `<svg class="chip-icon" viewBox="0 0 24 24" fill="none"><path d="M12 2v12M8 10l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
   },
+  'app.update': {
+    label:    'App Install',
+    category: 'app',
+    chipCls:  'chip-app',
+    dotCls:   'dot-app',
+    icon: `<svg class="chip-icon" viewBox="0 0 24 24" fill="none"><path d="M12 2v12M8 10l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+  },
   'network.state': {
     label:    'Network State',
     category: 'state',
@@ -110,6 +117,7 @@ function mainText(bc) {
     case 'app.lifecycle':   return `App  ·  ${bc.event}`;
     case 'app.launch':      return `${bc.launchType ? bc.launchType.charAt(0).toUpperCase() + bc.launchType.slice(1) : ''} launch`;
     case 'app.install':     return `Installed  ·  v${bc.version || ''}`;
+    case 'app.update':     return `Updated  ·  v${bc.from || ''}  →  v${bc.to || ''}`;
     case 'network.state':   return `Signal  →  ${bc.state}`;
     default:                return JSON.stringify(bc).slice(0, 90);
   }
