@@ -1,45 +1,91 @@
+// ─────────────────────────────────────────────────────────────────────────────
+//  Breadcrumb Visualizer — app.js
+//  Material Design 3 edition
+// ─────────────────────────────────────────────────────────────────────────────
+
 // ── Type Configuration ───────────────────────────────────────────────────────
 const TYPE_CONFIG = {
-  'ui.lifecycle':   { label: 'UI Lifecycle',  chipClass: 'chip-lifecycle', dot: '#8b5cf6', badge: '#8b5cf620', badgeBorder: '#8b5cf640' },
-  'network.request':{ label: 'Network',       chipClass: 'chip-network',   dot: '#10b981', badge: '#10b98120', badgeBorder: '#10b98140' },
-  'user.event':     { label: 'User Event',    chipClass: 'chip-user',      dot: '#f59e0b', badge: '#f59e0b20', badgeBorder: '#f59e0b40' },
-  'app.lifecycle':  { label: 'App Lifecycle', chipClass: 'chip-app',       dot: '#06b6d4', badge: '#06b6d420', badgeBorder: '#06b6d440' },
-  'app.launch':     { label: 'App Launch',    chipClass: 'chip-app',       dot: '#06b6d4', badge: '#06b6d420', badgeBorder: '#06b6d440' },
-  'app.install':    { label: 'App Install',   chipClass: 'chip-app',       dot: '#06b6d4', badge: '#06b6d420', badgeBorder: '#06b6d440' },
-  'network.state':  { label: 'Network State', chipClass: 'chip-state',     dot: '#ec4899', badge: '#ec489920', badgeBorder: '#ec489940' },
+  'ui.lifecycle': {
+    label:    'UI Lifecycle',
+    category: 'lifecycle',
+    chipCls:  'chip-lifecycle',
+    dotCls:   'dot-lifecycle',
+    icon: `<svg class="chip-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.8"/></svg>`,
+  },
+  'network.request': {
+    label:    'Network',
+    category: 'network',
+    chipCls:  'chip-network',
+    dotCls:   'dot-network',
+    icon: `<svg class="chip-icon" viewBox="0 0 24 24" fill="none"><path d="M12 2a10 10 0 1 1 0 20A10 10 0 0 1 12 2z" stroke="currentColor" stroke-width="1.8"/><path d="M12 2c-2.5 3-4 6.5-4 10s1.5 7 4 10M12 2c2.5 3 4 6.5 4 10s-1.5 7-4 10M2 12h20" stroke="currentColor" stroke-width="1.8"/></svg>`,
+  },
+  'user.event': {
+    label:    'User Event',
+    category: 'user',
+    chipCls:  'chip-user',
+    dotCls:   'dot-user',
+    icon: `<svg class="chip-icon" viewBox="0 0 24 24" fill="none"><path d="M6.5 6.5 17.5 17.5M6.5 6.5V14M6.5 6.5H14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  },
+  'app.lifecycle': {
+    label:    'App Lifecycle',
+    category: 'app',
+    chipCls:  'chip-app',
+    dotCls:   'dot-app',
+    icon: `<svg class="chip-icon" viewBox="0 0 24 24" fill="none"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" stroke="currentColor" stroke-width="1.8"/><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+  },
+  'app.launch': {
+    label:    'App Launch',
+    category: 'app',
+    chipCls:  'chip-app',
+    dotCls:   'dot-app',
+    icon: `<svg class="chip-icon" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>`,
+  },
+  'app.install': {
+    label:    'App Install',
+    category: 'app',
+    chipCls:  'chip-app',
+    dotCls:   'dot-app',
+    icon: `<svg class="chip-icon" viewBox="0 0 24 24" fill="none"><path d="M12 2v12M8 10l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+  },
+  'network.state': {
+    label:    'Network State',
+    category: 'state',
+    chipCls:  'chip-state',
+    dotCls:   'dot-state',
+    icon: `<svg class="chip-icon" viewBox="0 0 24 24" fill="none"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  },
 };
 
-function getConfig(type) {
-  return TYPE_CONFIG[type] || {
-    label: type,
-    chipClass: 'chip-nav',
-    dot: '#4f8ef7',
-    badge: '#4f8ef720',
-    badgeBorder: '#4f8ef740',
+function getCfg(type) {
+  return TYPE_CONFIG[type] ?? {
+    label:    type,
+    category: 'nav',
+    chipCls:  'chip-nav',
+    dotCls:   'dot-nav',
+    icon: `<svg class="chip-icon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>`,
   };
 }
 
-// ── App State ────────────────────────────────────────────────────────────────
+// ── State ────────────────────────────────────────────────────────────────────
 let allBreadcrumbs = [];
 let activeFilters  = new Set();
 let sortOrder      = 'asc';
 let crashEvent     = null;
 
-// ── Formatting Helpers ───────────────────────────────────────────────────────
-function formatTime(ts) {
+// ── Formatting ───────────────────────────────────────────────────────────────
+function fmtTime(ts) {
   const d = new Date(ts);
-  const hms = d.toLocaleTimeString('en-US', {
+  return d.toLocaleTimeString('en-US', {
     hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit',
-  });
-  return hms + '.' + String(d.getMilliseconds()).padStart(3, '0');
+  }) + '.' + String(d.getMilliseconds()).padStart(3, '0');
 }
 
-function formatDelta(ms) {
+function fmtDelta(ms) {
   if (ms < 1000) return `+${ms}ms`;
   return `+${(ms / 1000).toFixed(1)}s`;
 }
 
-function formatDuration(ms) {
+function fmtDuration(ms) {
   if (ms < 1000) return ms + 'ms';
   if (ms < 60000) return (ms / 1000).toFixed(1) + 's';
   const m = Math.floor(ms / 60000);
@@ -47,82 +93,71 @@ function formatDuration(ms) {
   return `${m}m ${s}s`;
 }
 
-function getStatusClass(code) {
+function statusClass(code) {
   if (!code) return '';
   const n = parseInt(code, 10);
-  if (n >= 500) return 'status-err';
-  if (n >= 400) return 'status-warn';
-  return 'status-ok';
+  if (n >= 500) return 'status-5xx';
+  if (n >= 400) return 'status-4xx';
+  return 'status-2xx';
 }
 
-// ── Event Text Builders ──────────────────────────────────────────────────────
-function buildMainText(bc) {
+// ── Event Text ───────────────────────────────────────────────────────────────
+function mainText(bc) {
   switch (bc.type) {
-    case 'ui.lifecycle':
-      return `${bc.className} → ${bc.event}`;
-    case 'network.request':
-      return bc.url ? bc.url.replace(/^https?:\/\//, '') : 'Unknown URL';
-    case 'user.event':
-      return `${bc.action} on ${bc.targetClass || ''}${bc.targetId ? ' · ' + bc.targetId.split(':').pop() : ''}`;
-    case 'app.lifecycle':
-      return `App → ${bc.event}`;
-    case 'app.launch':
-      return `Launch · ${bc.launchType || ''}`;
-    case 'app.install':
-      return `Installed · v${bc.version || ''}`;
-    case 'network.state':
-      return `Network → ${bc.state}`;
-    default:
-      return JSON.stringify(bc).slice(0, 80);
+    case 'ui.lifecycle':    return `${bc.className}  ·  ${bc.event}`;
+    case 'network.request': return bc.url ? bc.url.replace(/^https?:\/\//, '') : 'Unknown URL';
+    case 'user.event':      return `${bc.action}  ·  ${bc.targetClass || ''}${bc.targetId ? '  #' + bc.targetId.split(':').pop() : ''}`;
+    case 'app.lifecycle':   return `App  ·  ${bc.event}`;
+    case 'app.launch':      return `${bc.launchType ? bc.launchType.charAt(0).toUpperCase() + bc.launchType.slice(1) : ''} launch`;
+    case 'app.install':     return `Installed  ·  v${bc.version || ''}`;
+    case 'network.state':   return `Signal  →  ${bc.state}`;
+    default:                return JSON.stringify(bc).slice(0, 90);
   }
 }
 
-function buildDetail(bc) {
-  const parts = [];
-
+function detailItems(bc) {
+  const items = [];
   if (bc.type === 'network.request') {
-    if (bc.statusCode) {
-      const cls = getStatusClass(bc.statusCode);
-      parts.push(`<span><strong>status</strong> <span class="${cls}">${bc.statusCode}</span></span>`);
-    }
-    if (bc.url) {
-      parts.push(`<span><strong>url</strong> ${bc.url}</span>`);
-    }
+    if (bc.statusCode) items.push({ key: 'status', val: bc.statusCode, cls: statusClass(bc.statusCode) });
+    if (bc.url)        items.push({ key: 'url', val: bc.url });
   }
-
   if (bc.type === 'user.event') {
-    if (bc.targetId)    parts.push(`<span><strong>id</strong> ${bc.targetId}</span>`);
-    if (bc.targetClass) parts.push(`<span><strong>class</strong> ${bc.targetClass}</span>`);
+    if (bc.targetId)    items.push({ key: 'id',    val: bc.targetId });
+    if (bc.targetClass) items.push({ key: 'class', val: bc.targetClass });
   }
-
   if (bc.type === 'ui.lifecycle') {
-    parts.push(`<span><strong>class</strong> ${bc.className}</span>`);
-    parts.push(`<span><strong>event</strong> ${bc.event}</span>`);
+    items.push({ key: 'class', val: bc.className });
+    items.push({ key: 'event', val: bc.event });
   }
-
-  return parts.join('');
+  if (bc.type === 'network.state') {
+    items.push({ key: 'state', val: bc.state });
+  }
+  return items;
 }
 
-// ── JSON Parsing ─────────────────────────────────────────────────────────────
+function renderDetailRow(bc) {
+  const items = detailItems(bc);
+  if (!items.length) return '';
+  const html = items.map(it =>
+    `<span class="bc-detail-item"><span class="bc-detail-key">${it.key}</span><span class="${it.cls || ''}">${it.val}</span></span>`
+  ).join('');
+  return `<div class="bc-detail-row">${html}</div>`;
+}
+
+// ── Parsing ───────────────────────────────────────────────────────────────────
 function parsePayload(raw) {
   let parsed = JSON.parse(raw.trim());
-
-  // unwrap outer array if needed
   if (Array.isArray(parsed)) parsed = parsed[0];
 
-  let bcs   = [];
-  let crash = null;
+  let bcs = [], crash = null;
 
-  // format: full crash report with NATIVEAPP.breadcrumbs string
-  if (parsed.NATIVEAPP && parsed.NATIVEAPP.breadcrumbs) {
+  if (parsed?.NATIVEAPP?.breadcrumbs) {
     bcs = JSON.parse(parsed.NATIVEAPP.breadcrumbs);
   } else if (Array.isArray(parsed)) {
-    // format: raw breadcrumb array
     bcs = parsed;
   }
 
-  // extract crash metadata
-  if (parsed.msg) {
+  if (parsed?.msg) {
     crash = {
       message: parsed.msg.split('~~')[0],
       type:    parsed.eTp || 'Crash',
@@ -133,70 +168,60 @@ function parsePayload(raw) {
   return { breadcrumbs: bcs, crash };
 }
 
-// ── Error Display ─────────────────────────────────────────────────────────────
-function showError(msg) {
-  const el = document.getElementById('errorMsg');
-  el.textContent = msg;
-  el.classList.add('visible');
-}
-
-// ── Stats Rendering ───────────────────────────────────────────────────────────
+// ── Stats ─────────────────────────────────────────────────────────────────────
 function renderStats() {
   const bcs = allBreadcrumbs;
-
   document.getElementById('statTotal').textContent = bcs.length;
 
-  const timestamps = bcs.map(b => b.timestamp).filter(Boolean);
-  if (timestamps.length >= 2) {
-    const dur = Math.max(...timestamps) - Math.min(...timestamps);
-    document.getElementById('statDuration').textContent = formatDuration(dur);
+  const ts = bcs.map(b => b.timestamp).filter(Boolean);
+  if (ts.length >= 2) {
+    document.getElementById('statDuration').textContent =
+      fmtDuration(Math.max(...ts) - Math.min(...ts));
   }
 
-  const screens = new Set(
-    bcs.filter(b => b.type === 'ui.lifecycle' && b.className).map(b => b.className)
-  );
-  document.getElementById('statScreens').textContent = screens.size;
-
-  document.getElementById('statNetwork').textContent =
-    bcs.filter(b => b.type === 'network.request').length;
-
-  document.getElementById('statUser').textContent =
-    bcs.filter(b => b.type === 'user.event').length;
+  const screens = new Set(bcs.filter(b => b.type === 'ui.lifecycle' && b.className).map(b => b.className));
+  document.getElementById('statScreens').textContent  = screens.size;
+  document.getElementById('statNetwork').textContent  = bcs.filter(b => b.type === 'network.request').length;
+  document.getElementById('statUser').textContent     = bcs.filter(b => b.type === 'user.event').length;
 }
 
-// ── Filter Chip Rendering ─────────────────────────────────────────────────────
+// ── Filter Chips ──────────────────────────────────────────────────────────────
 function renderFilterChips() {
-  const counts = {};
+  const counts  = {};
   allBreadcrumbs.forEach(b => { counts[b.type] = (counts[b.type] || 0) + 1; });
 
-  const container = document.getElementById('filterChips');
-  container.innerHTML = '';
-
-  // preserve first-seen order
-  const types = [...new Set(allBreadcrumbs.map(b => b.type))];
+  const types   = [...new Set(allBreadcrumbs.map(b => b.type))];
+  const wrap    = document.getElementById('filterChips');
+  wrap.innerHTML = '';
 
   types.forEach(type => {
-    const cfg  = getConfig(type);
+    const cfg  = getCfg(type);
     const chip = document.createElement('div');
-    chip.className    = `filter-chip ${cfg.chipClass}`;
-    chip.dataset.type = type;
+    chip.className = `filter-chip selected`;
+    chip.dataset.type     = type;
+    chip.dataset.category = cfg.category;
+
     chip.innerHTML = `
-      <span class="dot"></span>
-      ${cfg.label}
-      <span class="count">${counts[type]}</span>
+      <svg class="chip-check" width="14" height="14" viewBox="0 0 24 24" fill="none">
+        <path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="chip-dot" style="background:currentColor;opacity:0.6"></span>
+      <span>${cfg.label}</span>
+      <span class="chip-count">${counts[type]}</span>
     `;
+
     chip.addEventListener('click', () => toggleFilter(type, chip));
-    container.appendChild(chip);
+    wrap.appendChild(chip);
   });
 }
 
 function toggleFilter(type, chip) {
   if (activeFilters.has(type)) {
     activeFilters.delete(type);
-    chip.classList.add('inactive');
+    chip.classList.remove('selected');
   } else {
     activeFilters.add(type);
-    chip.classList.remove('inactive');
+    chip.classList.add('selected');
   }
   applyFilters();
 }
@@ -209,7 +234,7 @@ function setSort(order) {
   renderTimeline();
 }
 
-// ── Timeline Rendering ────────────────────────────────────────────────────────
+// ── Timeline ──────────────────────────────────────────────────────────────────
 function renderTimeline() {
   const container = document.getElementById('timeline');
   container.innerHTML = '';
@@ -219,65 +244,63 @@ function renderTimeline() {
   );
 
   sorted.forEach((bc, idx) => {
-    const cfg   = getConfig(bc.type);
+    const cfg   = getCfg(bc.type);
     const delta = idx > 0 ? Math.abs(bc.timestamp - sorted[idx - 1].timestamp) : 0;
-    const detail = buildDetail(bc);
+    const detail = renderDetailRow(bc);
 
     const item = document.createElement('div');
     item.className        = 'bc-item';
     item.dataset.type     = bc.type;
-    item.style.animationDelay = `${Math.min(idx * 12, 300)}ms`;
+    item.style.animationDelay = `${Math.min(idx * 10, 250)}ms`;
 
     item.innerHTML = `
-      <div class="bc-dot-wrap">
-        <div class="bc-dot" style="background:${cfg.dot}"></div>
+      <div class="bc-node">
+        <div class="bc-node-dot ${cfg.dotCls}"></div>
       </div>
-      <div class="bc-content">
-        <div class="bc-row">
-          <span class="bc-badge"
-            style="background:${cfg.badge};border:1px solid ${cfg.badgeBorder};color:${cfg.dot}">
+      <div class="bc-card">
+        <div class="bc-card-row">
+          <span class="bc-type-chip ${cfg.chipCls}">
+            ${cfg.icon}
             ${cfg.label}
           </span>
-          <span class="bc-main" title="${buildMainText(bc)}">${buildMainText(bc)}</span>
-          <div class="bc-meta">
-            ${delta > 0 ? `<span class="bc-delta">${formatDelta(delta)}</span>` : ''}
-            <span class="bc-time">${formatTime(bc.timestamp)}</span>
+          <span class="bc-text" title="${mainText(bc)}">${mainText(bc)}</span>
+          <div class="bc-meta-group">
+            ${delta > 0 ? `<span class="bc-delta">${fmtDelta(delta)}</span>` : ''}
+            <span class="bc-time">${fmtTime(bc.timestamp)}</span>
           </div>
         </div>
-        ${detail ? `<div class="bc-detail">${detail}</div>` : ''}
+        ${detail}
       </div>
     `;
 
     container.appendChild(item);
   });
 
-  // append crash card as the final item
+  // Crash item
   if (crashEvent) {
     const crashEl = document.createElement('div');
-    crashEl.className = 'bc-item is-crash';
-    crashEl.style.animationDelay = `${Math.min(sorted.length * 12, 300)}ms`;
+    crashEl.className = 'bc-item bc-crash';
+    crashEl.style.animationDelay = `${Math.min(sorted.length * 10, 250)}ms`;
+
+    const crashIcon = `<svg class="chip-icon" viewBox="0 0 24 24" fill="none"><path d="M12 9v4M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>`;
+
     crashEl.innerHTML = `
-      <div class="bc-dot-wrap">
-        <div class="bc-dot" style="background:#ef4444"></div>
+      <div class="bc-node">
+        <div class="bc-node-dot dot-crash"></div>
       </div>
-      <div class="bc-content"
-        style="border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.07)">
-        <div class="bc-row">
-          <span class="bc-badge"
-            style="background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);color:#ef4444">
-            💥 CRASH
+      <div class="bc-card">
+        <div class="bc-card-row">
+          <span class="bc-type-chip chip-crash">
+            ${crashIcon}
+            Crash
           </span>
-          <span class="bc-main" style="color:#ef4444" title="${crashEvent.message}">
-            ${crashEvent.message}
-          </span>
-          <div class="bc-meta">
-            ${crashEvent.time
-              ? `<span class="bc-time">${formatTime(crashEvent.time)}</span>`
-              : ''}
+          <span class="bc-text" title="${crashEvent.message}">${crashEvent.message}</span>
+          <div class="bc-meta-group">
+            ${crashEvent.time ? `<span class="bc-time">${fmtTime(crashEvent.time)}</span>` : ''}
           </div>
         </div>
-        <div class="bc-detail" style="color:#ef4444aa">
-          <span><strong style="color:#ef4444bb">type</strong> ${crashEvent.type}</span>
+        <div class="bc-detail-row">
+          <span class="bc-detail-item"><span class="bc-detail-key">type</span><span>${crashEvent.type}</span></span>
         </div>
       </div>
     `;
@@ -289,24 +312,21 @@ function renderTimeline() {
 
 // ── Filter Application ────────────────────────────────────────────────────────
 function applyFilters() {
-  const items = document.querySelectorAll('.bc-item');
-  let visible = 0;
+  const items   = document.querySelectorAll('.bc-item');
+  let   visible = 0;
 
   items.forEach(item => {
     const type = item.dataset.type;
-    // crash card has no type — always visible
-    if (!type || activeFilters.has(type)) {
-      item.classList.remove('filtered-out');
-      visible++;
-    } else {
-      item.classList.add('filtered-out');
-    }
+    const show = !type || activeFilters.has(type); // crash card (no type) always shows
+    item.classList.toggle('filtered-out', !show);
+    if (show) visible++;
   });
 
-  const total = allBreadcrumbs.length;
-  document.getElementById('resultCount').textContent = `${visible} / ${total} events`;
+  document.getElementById('resultCount').textContent =
+    `${visible} / ${allBreadcrumbs.length} events`;
 
-  document.getElementById('emptyState').classList.toggle('visible', visible === 0);
+  document.getElementById('emptyState')
+    .classList.toggle('hidden', visible > 0);
 }
 
 // ── Main Entry ────────────────────────────────────────────────────────────────
@@ -314,16 +334,13 @@ function parseAndRender() {
   const raw   = document.getElementById('jsonInput').value.trim();
   const errEl = document.getElementById('errorMsg');
 
-  if (!raw) { showError('Please paste a JSON payload first.'); return; }
+  if (!raw) { showErr('Please paste a JSON payload first.'); return; }
 
   try {
     const { breadcrumbs, crash } = parsePayload(raw);
     errEl.classList.remove('visible');
 
-    if (!breadcrumbs.length) {
-      showError('No breadcrumbs found in payload.');
-      return;
-    }
+    if (!breadcrumbs.length) { showErr('No breadcrumbs found in payload.'); return; }
 
     allBreadcrumbs = breadcrumbs;
     crashEvent     = crash;
@@ -333,27 +350,33 @@ function parseAndRender() {
     renderFilterChips();
     renderTimeline();
 
-    document.getElementById('controls').classList.add('visible');
-    document.getElementById('statsRow').classList.add('visible');
-    document.getElementById('timelineWrap').classList.add('visible');
+    document.getElementById('statsRow').classList.remove('hidden');
+    document.getElementById('controls').classList.remove('hidden');
+    document.getElementById('timelineWrap').classList.remove('hidden');
 
   } catch (e) {
-    showError('Invalid JSON: ' + e.message);
+    showErr('Invalid JSON: ' + e.message);
   }
+}
+
+function showErr(msg) {
+  const el = document.getElementById('errorMsg');
+  el.textContent = msg;
+  el.classList.add('visible');
 }
 
 function clearAll() {
   document.getElementById('jsonInput').value = '';
   document.getElementById('errorMsg').classList.remove('visible');
-  document.getElementById('controls').classList.remove('visible');
-  document.getElementById('statsRow').classList.remove('visible');
-  document.getElementById('timelineWrap').classList.remove('visible');
+  document.getElementById('statsRow').classList.add('hidden');
+  document.getElementById('controls').classList.add('hidden');
+  document.getElementById('timelineWrap').classList.add('hidden');
   document.getElementById('timeline').innerHTML = '';
   allBreadcrumbs = [];
   crashEvent     = null;
 }
 
-// ── Keyboard Shortcut: Cmd/Ctrl + Enter ──────────────────────────────────────
+// Keyboard shortcut: Cmd/Ctrl + Enter
 document.getElementById('jsonInput').addEventListener('keydown', e => {
   if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) parseAndRender();
 });
