@@ -7,6 +7,7 @@ const TYPE_CONFIG = {
   'app.launch':     { label: 'App Launch',    chipClass: 'chip-app',       dot: '#06b6d4', badge: '#06b6d420', badgeBorder: '#06b6d440' },
   'app.install':    { label: 'App Install',   chipClass: 'chip-app',       dot: '#06b6d4', badge: '#06b6d420', badgeBorder: '#06b6d440' },
   'network.state':  { label: 'Network State', chipClass: 'chip-state',     dot: '#ec4899', badge: '#ec489920', badgeBorder: '#ec489940' },
+  'system.event':  { label: 'System Event', chipClass: 'chip-state',     dot: '#9f48ec', badge: '#9f48ec20', badgeBorder: '#9f48ec40' },
 };
 
 function getConfig(type) {
@@ -72,6 +73,8 @@ function buildMainText(bc) {
       return `Installed · v${bc.version || ''}`;
     case 'network.state':
       return `Network → ${bc.state}`;
+    case 'system.event':
+      return `${bc.eventType} → ${bc.event}`;
     default:
       return JSON.stringify(bc).slice(0, 80);
   }
