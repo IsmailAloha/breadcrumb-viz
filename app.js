@@ -61,6 +61,20 @@ const TYPE_CONFIG = {
     dotCls:   'dot-state',
     icon: `<svg class="chip-icon" viewBox="0 0 24 24" fill="none"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
   },
+  'system.event': {
+    label:    'System Event',
+    category: 'state',
+    chipCls:  'chip-state',
+    dotCls:   'dot-state',
+    icon: `<svg class="chip-icon" viewBox="0 0 18 18" fill="none">
+  <path d="M0.5 0.5L10.4 10.4M0.5 0.5H3.8M0.5 0.5V3.8M13.5 13.5L17.2 17.2" 
+        stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M9 1.9l.6 1.2c.1.2.3.4.5.5l.5.3c.2.1.5.2.7.2l1.3-.1.9 1.5-.7 1.1c-.2.2-.2.5-.2.8v.6c0 .3.1.6.2.8l.7 1.1-.9 1.5-1.3-.1c-.2 0-.5.1-.7.2l-.5.3c-.2.1-.4.3-.5.5L9 16.1H7.8l-.6-1.2c-.1-.2-.3-.4-.5-.5l-.5-.3c-.2-.1-.5-.2-.7-.2l-1.3.1-.9-1.5.7-1.1c.1-.2.2-.5.2-.8v-.6c0-.3-.1-.6-.2-.8l-.7-1.1.9-1.5 1.3.1c.2 0 .5-.1.7-.2l.5-.3c.2-.1.4-.3.5-.5l.6-1.2H9z" 
+        stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+  <rect x="7" y="7" width="4" height="4" rx="1" 
+        stroke="currentColor" stroke-width="1.6"/>
+</svg>`,
+  },
 };
 
 function getCfg(type) {
@@ -119,6 +133,7 @@ function mainText(bc) {
     case 'app.install':     return `Installed  ·  v${bc.version || ''}`;
     case 'app.update':     return `Updated  ·  v${bc.from || ''}  →  v${bc.to || ''}`;
     case 'network.state':   return `Signal  →  ${bc.state}`;
+    case 'system.event':   return `${bs.eventType}  →  ${bc.event}`;
     default:                return JSON.stringify(bc).slice(0, 90);
   }
 }
