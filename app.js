@@ -133,7 +133,7 @@ function mainText(bc) {
     case 'app.install':     return `Installed  ·  v${bc.version || ''}`;
     case 'app.update':     return `Updated  ·  v${bc.from || ''}  →  v${bc.to || ''}`;
     case 'network.state':   return `Signal  →  ${bc.state}`;
-    case 'system.event':   return `${bs.eventType}  →  ${bc.event}`;
+    case 'system.event':   return `${bc.eventType}  →  ${bc.event}`;
     default:                return JSON.stringify(bc).slice(0, 90);
   }
 }
