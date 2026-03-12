@@ -127,7 +127,7 @@ function mainText(bc) {
   switch (bc.type) {
     case 'ui.lifecycle':    return `${bc.className}  ·  ${bc.event}`;
     case 'network.request': return bc.url ? bc.url.replace(/^https?:\/\//, '') : 'Unknown URL';
-    case 'user.event':      return `${bc.action}  ·  ${bc.targetClass || ''}${bc.targetId ? '  #' + bc.targetId.split(':').pop() : ''} ${bc.targetClass | bc.targetId ? '' : 'x = ' + bc.x + ', y = ' + bc.y}`;
+    case 'user.event':      return `${bc.action}  ·  ${bc.targetClass || ''}${bc.targetId ? '  #' + bc.targetId.split(':').pop() : ''} ${bc.targetId ? '' : 'x = ' + bc.x + ', y = ' + bc.y}`;
     case 'app.lifecycle':   return `App  ·  ${bc.event}`;
     case 'app.launch':      return `${bc.launchType ? bc.launchType.charAt(0).toUpperCase() + bc.launchType.slice(1) : ''} launch`;
     case 'app.install':     return `Installed  ·  v${bc.version || ''}`;
