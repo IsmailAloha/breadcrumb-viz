@@ -149,9 +149,9 @@ function mainText(bc) {
     case 'app.lifecycle':   return `App  ·  ${bc.event}`;
     case 'app.launch':      return `${bc.launchType ? bc.launchType.charAt(0).toUpperCase() + bc.launchType.slice(1) : ''} launch`;
     case 'app.install':     return `Installed  ·  v${bc.version || ''}`;
-    case 'app.update':     return `Updated  ·  v${bc.from || ''}  →  v${bc.to || ''}`;
+    case 'app.update':      return `Updated  ·  v${bc.from || ''}  →  v${bc.to || ''}`;
     case 'network.state':   return `Signal  →  ${bc.state}`;
-    case 'system.event':   return `${bc.eventType}  →  ${bc.event}`;
+    case 'system.event':    return `${bc.eventType}  →  ${bc.event}`;
     default:                return JSON.stringify(bc).slice(0, 90);
   }
 }
@@ -360,7 +360,7 @@ function applyFilters() {
 
   items.forEach(item => {
     const type = item.dataset.type;
-    const show = !type || activeFilters.has(type); // crash card (no type) always shows
+    const show = !type || activeFilters.has(type);
     item.classList.toggle('filtered-out', !show);
     if (show) visible++;
   });
@@ -419,7 +419,24 @@ function clearAll() {
   crashEvent     = null;
 }
 
-// Keyboard shortcut: Cmd/Ctrl + Enter
+// ── Keyboard Shortcut: Cmd/Ctrl + Enter ──────────────────────────────────────
 document.getElementById('jsonInput').addEventListener('keydown', e => {
   if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) parseAndRender();
+});
+
+// ── Auto-render default data on first load ───────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  try {
+    const { breadcrumbs, crash } = parsePayload(JSON.stringify(allBreadcrumbs));
+    if (!breadcrumbs.length) return;
+    allBreadcrumbs = breadcrumbs;
+    crashEvent     = crash;
+    activeFilters  = new Set(breadcrumbs.map(b => b.type));
+    renderStats();
+    renderFilterChips();
+    renderTimeline();
+    document.getElementById('statsRow').classList.remove('hidden');
+    document.getElementById('controls').classList.remove('hidden');
+    document.getElementById('timelineWrap').classList.remove('hidden');
+  } catch(e) {}
 });
